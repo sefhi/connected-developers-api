@@ -3,55 +3,77 @@
 [![CI](https://github.com/sefhirot69/template-symfony/actions/workflows/build.yml/badge.svg)](https://github.com/sefhirot69/template-symfony/actions/workflows/build.yml)
 --------------------------------------
 
-# 🚀 Template Symfony
+# Connected Developers API
 
-Este es un template para Symfony 6 en php 8.3, con algunas configuraciones ya predefinidas. Basado en [FrankenPHP](https://frankenphp.dev/). Para empezar a desarrollar tu propia
-API o microservicio.
+In this challenge you will have to create a REST API which will return whether two
+_developers_ are fully connected or not. Given a pair of developer handles they are
+considered connected if:
 
-## 🛠️ Requisitos
+* They follow each other on Twitter.
+* They have at least a Github organization in common.
 
-- 🐳 Docker
-- __Opcional__: Instalar el comando `make` para mejorar el punto de entrada a nuestra aplicación.
-    1. [Instalar en OSX](https://formulae.brew.sh/formula/make)
-    2. [Instalar en Window](https://parzibyte.me/blog/2020/12/30/instalar-make-windows/#Descargar_make)
+Assume that people having the same handle, both in Twitter and Github, are actually
+the same person.
 
-## ⚙️ Configuración del entorno
+_Disclaimer:_ We expect the implementation to query the official
+[Twitter](https://developer.twitter.com/en/docs) and
+[Github](https://docs.github.com/en/rest) APIs, and it's OK to use the existing
+client libraries!
 
-1. Clona el repositorio o haz un fork
-2. Escribe por terminal el comando `make`. Este comando instalara todo lo necesario para arrancar la aplicación.
-3. El api está disponible en la url http://localhost:41
-   4. Tienes un endpoint para verificar si la aplicación funciona http://localhost:41/api/healthcheck
+## How it works?
 
-```Puedes cambiar el puerto de salida, en el fichero docker-compose por el que más te guste. O definirlo en el .env```
+You have to implement a REST API with these 2 endpoints.
+You could find the whole description of the API in the [OpenAPI description file](/api.definition.yaml)
 
-## 🚀 Comandos Útiles
+#### Realtime Endpoint
 
-Este proyecto incluye un Makefile con algunos comandos útiles para el desarrollo. Puedes ejecutarlos con el comando *
-*make** seguido del nombre del comando.
+```bash
+GET /connected/realtime/dev1/dev2
+```
 
-### Comandos de Docker Compose
+This endpoint should return if the developers are connected and what GitHub
+organizations have they in common.
 
-* `make start`: Inicia los contenedores de Docker Compose.
-* `make stop`: Detiene los contenedores de Docker Compose.
-* `make down`: Detiene y elimina los contenedores de Docker Compose.
-* `make recreate`: Reinicia los contenedores de Docker Compose.
-* `make rebuild`: Reconstruye los contenedores de Docker Compose.
+#### Register Endpoint
 
-### Comandos de Composer
+Besides that, we are interested in the different statuses a pair of developers had
+in previous invocations of the real-time endpoint.
 
-* `make deps`: Instala las dependencias del proyecto.
-* `make update-deps`: Actualiza las dependencias del proyecto.
-* `make clear`: Limpia la caché de Symfony.
-* `make bash`: Abre una sesión de terminal en el contenedor de Docker.
+```bash
+GET /connected/register/dev1/dev2
+```
 
-### Otros comandos
+This endpoint should return all the related information from the previous requests to
+the real-time endpoint, including the date it was registered.
 
-* `make test`: Ejecuta los tests del proyecto.
-* `make lint`: Verifica el cumplimiento de los estándares de codificación.
-* `make style`: Corrige los problemas de formato de código.
-* `make static-analysis`: Verifica la calidad del código fuente.
+## Technical requirements
+
+* Create a **clean**, **maintainable** and **well-designed** code
+* **Test** your code until you are comfortable with it
+
+To understand how you take decisions during the implementation, please write a README
+file explaining some of the most important parts of the application.
+
+### What is going to take into account
+
+Have a functional API is important, but not the most! We expect to see some other
+things that are just as important:
+
+* The use of linters, type-hinting and some good practices around the language
+* Have in mind the problems of scaling the API (database, non-blocking I/O, threads, etc...)
+* Containerization of the API. Easiness to install & run
+
+---
+
+## How to submit your solution
+
+* Push your code to the `devel` branch - we encourage you to commit regularly to show your thinking process was.
+* **Create a new Pull Request** to `main` branch & **merge it**.
+
+Once merged you **won't be able to change or add** anything to your solution, so double-check that everything is as
+you expected!
+
+Remember that **there is no countdown**, so take your time and implement a solution that you are proud!
 
 
-📝 Recuerda que puedes consultar los detalles de cada comando en el Makefile del proyecto.
-
-¡Que lo disfrutes! 😎
+> Based in this [Template](https://github.com/sefhi/template-symfony) made by [Sefhi](https://github.com/sefhi)
