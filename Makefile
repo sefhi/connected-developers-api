@@ -1,7 +1,7 @@
 # VARIABLES
 ENV_FILE	   = .docker/.env
 DOCKER_COMPOSE = docker compose
-CONTAINER      = php
+CONTAINER      = connected-developers
 EXEC           = $(DOCKER_COMPOSE) exec -t $(CONTAINER)
 EXEC_PHP       = $(EXEC) php
 SYMFONY        = $(EXEC_PHP) bin/console
@@ -86,4 +86,4 @@ lint-diff:
 	@echo "Coding Standar Fixer Executed ✅"
 
 static-analysis:
-	@$(EXEC)  ./vendor/bin/phpstan analyse -c phpstan.neon.dist
+	@$(EXEC)  ./vendor/bin/phpstan analyse -c phpstan.dist.neon
