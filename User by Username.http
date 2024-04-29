@@ -1,0 +1,15 @@
+GET https://api.github.com/users/nicolas-grekas
+Accept: application/json
+
+###
+
+https://api.github.com/users/nicolas-grekas/orgs
+
+###
+https://api.github.com/users/nicolas-grekas/following/deltheil
+
+###
+https://api.github.com/users/nicolas-grekas/followers
+
+###
+https://api.github.com/users/sefhi/followers
