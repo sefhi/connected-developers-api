@@ -6,6 +6,7 @@ namespace App\Tests\Unit\Connect\User\Application\Query;
 
 use App\Connect\User\Application\Query\CheckGitHubUserConnectionAndOrganizationQuery;
 use App\Connect\User\Application\Query\CheckGitHubUserConnectionAndOrganizationQueryHandler;
+use App\Connect\User\Application\Query\CheckUsersAreConnectedAndInSameOrganizationResponse;
 use App\Connect\User\Domain\CheckConnectionGitHub;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -23,6 +24,46 @@ final class CheckGitHubUserConnectionAndOrganizationQueryHandlerTest extends Tes
     public function itShouldCheckUsersAreConnectedAndInSameOrganization(): void
     {
         // GIVEN
+
+        $username1 = 'username1';
+        $username2 = 'username2';
+        $query     = new CheckGitHubUserConnectionAndOrganizationQuery(
+            $username1,
+            $username2
+        );
+        $organizationsExpected = ['organization1', 'organization2'];
+
+        // WHEN
+
+        $this->checkConnectionGitHub
+            ->expects(self::exactly(2))
+            ->method('checkFollowing')
+            ->willReturnOnConsecutiveCalls(true, true);
+
+        $this->checkConnectionGitHub
+            ->expects(self::once())
+            ->method('getCommonOrganizations')
+            ->with($username1, $username2)
+            ->willReturn($organizationsExpected);
+
+        $handler = new CheckGitHubUserConnectionAndOrganizationQueryHandler(
+            $this->checkConnectionGitHub
+        );
+
+        // THEN
+
+        $result = $handler($query);
+
+        self::assertInstanceOf(CheckUsersAreConnectedAndInSameOrganizationResponse::class, $result);
+        self::assertTrue($result->connected());
+        self::assertSame($organizationsExpected, $result->organizations());
+    }
+
+    /** @test  */
+    public function itShouldThrownErrorWhenNotFollowingAtLeastOneUser(): void
+    {
+        // GIVEN
+
         $username1 = 'username1';
         $username2 = 'username2';
         $query     = new CheckGitHubUserConnectionAndOrganizationQuery(
@@ -33,13 +74,13 @@ final class CheckGitHubUserConnectionAndOrganizationQueryHandlerTest extends Tes
         // WHEN
 
         $this->checkConnectionGitHub
-            ->expects(self::exactly(2))
+            ->expects(self::once())
             ->method('checkFollowing')
-            ->willReturnCallback(
-                function (string $usernameCurrent, string $usernameTarget) use ($username1, $username2) {
-                    return $usernameCurrent === $username1 && $usernameTarget === $username2 || $usernameCurrent === $username2 && $usernameTarget === $username1;
-                }
-            );
+            ->willReturn(false);
+
+        $this->checkConnectionGitHub
+            ->expects(self::never())
+            ->method('getCommonOrganizations');
 
         $handler = new CheckGitHubUserConnectionAndOrganizationQueryHandler(
             $this->checkConnectionGitHub
@@ -47,6 +88,10 @@ final class CheckGitHubUserConnectionAndOrganizationQueryHandlerTest extends Tes
 
         // THEN
 
-        self::assertTrue($handler($query));
+        $result = $handler($query);
+
+        self::assertInstanceOf(CheckUsersAreConnectedAndInSameOrganizationResponse::class, $result);
+        self::assertFalse($result->connected());
+        self::assertEmpty($result->organizations());
     }
 }
