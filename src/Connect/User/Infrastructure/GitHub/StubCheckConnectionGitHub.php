@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Connect\User\Infrastructure\GitHub;
 
-class StubCheckConnectionGitHub extends SymfonyHttpCheckConnectionGitHub
+readonly class StubCheckConnectionGitHub extends SymfonyHttpCheckConnectionGitHub
 {
     public function checkFollowing(string $username1, string $username2): bool
     {
