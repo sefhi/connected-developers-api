@@ -1,0 +1,4 @@
+GetConnected:
+  path: /realtime/{username1}/{username2}
+  controller: App\Connect\User\Infrastructure\Api\CheckGitHubUserConnectionAndOrganizationController
+  methods: [GET]

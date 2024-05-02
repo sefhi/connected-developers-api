@@ -2,3 +2,8 @@ Health:
     prefix: /api/health
     resource: ../src/Health/Infrastructure/Api/routes.yaml
     trailing_slash_on_root: false
+
+Connect:
+    prefix: /api/connected
+    resource: ../src/Connect/User/Infrastructure/Api/routes.yaml
+    trailing_slash_on_root: false

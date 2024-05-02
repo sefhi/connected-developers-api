@@ -6,9 +6,10 @@ namespace App\Connect\User\Application\Query;
 
 use App\Connect\User\Domain\CheckConnectionGitHub;
 use App\Connect\User\Domain\UserConnectionNotFoundException;
+use App\Shared\Domain\Bus\Query\QueryHandler;
 use App\Shared\Domain\Bus\Query\QueryResponse;
 
-final class CheckGitHubUserConnectionAndOrganizationQueryHandler
+final class CheckGitHubUserConnectionAndOrganizationQueryHandler implements QueryHandler
 {
     public function __construct(
         private readonly CheckConnectionGitHub $checkConnectionGitHub

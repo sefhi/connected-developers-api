@@ -35,5 +35,7 @@ services:
             tags:
                 - { name: messenger.message_handler, bus: query.bus }
 
+    App\Connect\User\Domain\CheckConnectionGitHub: '@App\Connect\User\Infrastructure\GitHub\SymfonyHttpCheckConnectionGitHub'
+
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
