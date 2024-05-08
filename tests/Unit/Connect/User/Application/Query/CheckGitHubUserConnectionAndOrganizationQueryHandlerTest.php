@@ -8,17 +8,21 @@ use App\Connect\User\Application\Query\CheckGitHubUserConnectionAndOrganizationQ
 use App\Connect\User\Application\Query\CheckGitHubUserConnectionAndOrganizationQueryHandler;
 use App\Connect\User\Application\Query\CheckUsersAreConnectedAndInSameOrganizationResponse;
 use App\Connect\User\Domain\CheckConnectionGitHub;
+use App\Connect\User\Domain\ConnectedRegisteredDomainEvent;
 use App\Connect\User\Domain\UserConnectionNotFoundException;
+use App\Shared\Domain\Bus\Event\EventBus;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 final class CheckGitHubUserConnectionAndOrganizationQueryHandlerTest extends TestCase
 {
     private CheckConnectionGitHub|MockObject $checkConnectionGitHub;
+    private EventBus|MockObject $eventBus;
 
     protected function setUp(): void
     {
         $this->checkConnectionGitHub = $this->createMock(CheckConnectionGitHub::class);
+        $this->eventBus              = $this->createMock(EventBus::class);
     }
 
     /** @test  */
@@ -47,8 +51,21 @@ final class CheckGitHubUserConnectionAndOrganizationQueryHandlerTest extends Tes
             ->with($username1, $username2)
             ->willReturn($organizationsExpected);
 
+        $this->eventBus
+            ->expects(self::once())
+            ->method('publish')
+            ->with(
+                self::callback(
+                    fn (ConnectedRegisteredDomainEvent $event) => $event->getUsername1() === $username1
+                        && $event->getUsername2() === $username2
+                        && true === $event->isConnected()
+                        && $event->getOrganizations() === $organizationsExpected
+                )
+            );
+
         $handler = new CheckGitHubUserConnectionAndOrganizationQueryHandler(
-            $this->checkConnectionGitHub
+            $this->checkConnectionGitHub,
+            $this->eventBus,
         );
 
         // THEN
@@ -84,7 +101,8 @@ final class CheckGitHubUserConnectionAndOrganizationQueryHandlerTest extends Tes
             ->method('getCommonOrganizations');
 
         $handler = new CheckGitHubUserConnectionAndOrganizationQueryHandler(
-            $this->checkConnectionGitHub
+            $this->checkConnectionGitHub,
+            $this->eventBus,
         );
 
         // THEN
@@ -119,7 +137,8 @@ final class CheckGitHubUserConnectionAndOrganizationQueryHandlerTest extends Tes
             ->willReturn([]);
 
         $handler = new CheckGitHubUserConnectionAndOrganizationQueryHandler(
-            $this->checkConnectionGitHub
+            $this->checkConnectionGitHub,
+            $this->eventBus,
         );
 
         // THEN

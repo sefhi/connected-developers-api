@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Connect\User\Infrastructure\Api;
 
+use App\Connect\User\Domain\UserConnectionNotFoundException;
 use App\Connect\User\Infrastructure\Api\Dto\CheckGitHubDto;
 use App\Shared\Api\BaseController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -22,6 +23,8 @@ final class CheckGitHubUserConnectionAndOrganizationController extends BaseContr
 
     protected function exceptions(): array
     {
-        return [];
+        return [
+            UserConnectionNotFoundException::class => Response::HTTP_NOT_FOUND,
+        ];
     }
 }

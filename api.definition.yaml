@@ -5,7 +5,7 @@ info:
     Connected Developers API is a REST API which will return whether two developers are fully connected or not, considering a fully connected accounts where they follow each other on Twitter and have a GitHub organization in common.
   version: 1.0.0
 servers:
-  - url: 'https'
+  - url: 'https://localhost/api/'
 paths:
   /connected/realtime/{dev1}/{dev2}:
     get:

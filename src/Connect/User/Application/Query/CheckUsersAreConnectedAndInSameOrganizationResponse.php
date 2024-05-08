@@ -14,6 +14,16 @@ final readonly class CheckUsersAreConnectedAndInSameOrganizationResponse impleme
     ) {
     }
 
+    public static function fromJson(string $json): self
+    {
+        $data = json_decode($json, true);
+
+        return new self(
+            $data['connected'],
+            $data['organizations']
+        );
+    }
+
     public function connected(): bool
     {
         return $this->connected;

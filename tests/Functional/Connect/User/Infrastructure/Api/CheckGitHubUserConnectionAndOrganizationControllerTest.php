@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Functional\Connect\User\Infrastructure\Api;
 
+use App\Connect\User\Application\Query\CheckUsersAreConnectedAndInSameOrganizationResponse;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
@@ -31,7 +32,12 @@ final class CheckGitHubUserConnectionAndOrganizationControllerTest extends WebTe
 
         // THEN
 
+        $json        = $response->getContent();
+        $responseDto = CheckUsersAreConnectedAndInSameOrganizationResponse::fromJson($json);
+
         self::assertResponseIsSuccessful();
-        self::assertJson($response->getContent());
+        self::assertJson($json);
+        self::assertTrue($responseDto->connected());
+        self::assertNotEmpty($responseDto->organizations());
     }
 }
