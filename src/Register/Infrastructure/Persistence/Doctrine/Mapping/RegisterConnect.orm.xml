@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+                  http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+
+    <entity name="App\Register\Domain\RegisterConnect" table="app_register_connect">
+        <id name="id" type="uuid" length="36"/>
+        <field name="username1" length="255"/>
+        <field name="username2" length="255"/>
+        <field name="connected" type="boolean"/>
+        <field name="organizations" type="array"/>
+        <field name="registeredAt" type="datetime_immutable" column="registered_at"/>
+    </entity>
+
+
+</doctrine-mapping>
