@@ -45,7 +45,7 @@ final class DoctrineRegisterConnectRepositoryTest extends KernelTestCase
         // THEN
         self::assertSame(
             $registerConnect,
-            $this->albumRepository->search(
+            $this->albumRepository->searchOneBy(
                 Criteria::create(
                     Filters::fromArray(
                         [
