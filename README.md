@@ -1,6 +1,6 @@
 ![Symfony 6](https://img.shields.io/badge/Symfony-6.4-blueviolet)
 ![PHP Version](https://img.shields.io/badge/php-8.3-blue.svg)
-[![CI](https://github.com/sefhirot69/connected-developers-api/actions/workflows/build.yml/badge.svg)](https://github.com/sefhirot69/template-symfony/actions/workflows/build.yml)
+[![CI](https://github.com/sefhi/connected-developers-api/actions/workflows/build.yml/badge.svg)](https://github.com/sefhirot69/template-symfony/actions/workflows/build.yml)
 --------------------------------------
 
 # Connected Developers API
